@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Админ-панель</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>*{font-family:'Inter',sans-serif}</style>
+</head>
+<body class="bg-[#f1f5f9] text-gray-900">
+
+{% set admin_path = ADMIN_PATH|default('/ligovckij-prospekt/__admin_hidden_qwErTY456') %}
+
+<div class="max-w-6xl mx-auto p-4 pb-24">
+
+  <h1 class="text-2xl font-bold mb-4 text-center">🛠 Админ-панель</h1>
+
+  <!-- ===== два столбца ===== -->
+  <div class="grid md:grid-cols-[260px_1fr] gap-4">
+
+    <!-- ─────── Заказы (слева) ─────── -->
+    <aside class="bg-white rounded-2xl shadow p-3 max-h-[75vh] overflow-y-auto">
+      <h2 class="text-lg font-semibold mb-2">📄 Заказы</h2>
+
+      {% if orders %}
+        {# создаём «пространство имён», в котором переменные сохраняются между итерациями #}
+        {% set ns = namespace(prev='') %}
+
+        {% for o in orders|sort(attribute='created', reverse=True) %}
+          {% set d = o.created.split(' ')[0] %}
+
+          {# новая дата → выводим шапку и открываем новый список #}
+          {% if d != ns.prev %}
+            {% if ns.prev %}</ul>{% endif %}
+            <h3 class="sticky top-0 bg-white py-1 text-base font-bold text-slate-600 border-b">{{ d }}</h3>
+            <ul class="space-y-1 text-sm">
+            {% set ns.prev = d %}
+          {% endif %}
+
+          <li class="border-b last:border-0 pb-1 pl-2">
+            #{{ o.id }} • <span class="font-medium">{{ o.total }} ₽</span><br>
+            id {{ o.user_id }} • {{ o.created.split(' ')[1] }}
+          </li>
+
+          {% if loop.last %}</ul>{% endif %}
+        {% endfor %}
+      {% else %}
+        <p class="text-xs text-gray-500">Пока нет заказов.</p>
+      {% endif %}
+    </aside>
+
+
+    <!-- ─────── Правая колонка ─────── -->
+    <section class="space-y-6">
+
+      <!-- ░░ Категории ░░ -->
+      <div class="bg-white rounded-2xl shadow p-4">
+        <h2 class="text-xl font-semibold mb-3">🏷 Категории</h2>
+
+        <form action="/ligovckij-prospekt/admin/add-category" method="post" class="flex flex-wrap gap-2 mb-4">
+          <input type="hidden" name="user_id" value="{{ user_id }}">
+          <input name="name" placeholder="Новая категория"
+                 class="border p-2 rounded-xl flex-grow min-w-[120px]">
+          <button class="bg-purple-600 text-white px-4 py-2 rounded-xl">Добавить</button>
+        </form>
+
+        <div class="flex flex-wrap gap-2">
+          {% for c in categories %}
+            <div class="border px-3 py-1 rounded-xl text-sm flex items-center gap-2 bg-gray-50">
+              <span class="cat-name">{{ c }}</span>
+
+              <a href="/ligovckij-prospekt/admin/delete-category?name={{ c }}&user_id={{ user_id }}"
+                 class="text-red-600 hover:text-red-800">✖</a>
+
+              <form action="/ligovckij-prospekt/admin/rename-category" method="post"
+                    class="hidden rename-form flex items-center gap-1">
+                <input type="hidden" name="user_id" value="{{ user_id }}">
+                <input type="hidden" name="old"    value="{{ c }}">
+                <input name="new" class="border p-1 rounded w-28 text-xs" required>
+                <button class="text-green-600">✔</button>
+              </form>
+
+              <button class="text-blue-600 text-xs edit-btn">✎</button>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- ░░ Новости ░░ -->
+      <div class="bg-white rounded-2xl shadow p-4">
+        <h2 class="text-xl font-semibold mb-3">📰 Новости</h2>
+
+        <form action="/ligovckij-prospekt/admin/add-news" method="post" enctype="multipart/form-data" class="space-y-3 mb-6">
+          <input type="hidden" name="user_id" value="{{ user_id }}">
+
+          <input name="title" placeholder="Заголовок" class="w-full border p-2 rounded-xl">
+          <textarea name="text" placeholder="Текст новости" class="w-full border p-2 rounded-xl"></textarea>
+
+          <label class="block text-sm">Обложка (превью):</label>
+          <input type="file" name="cover" accept="image/*" required
+                 class="w-full border p-2 rounded-xl"
+                 onchange="previewImage(event,'prev-cover')">
+          <img id="prev-cover" class="w-40 mt-2 rounded-xl hidden">
+
+          <label class="block text-sm">Основное изображение:</label>
+          <input type="file" name="image" accept="image/*" required
+                 class="w-full border p-2 rounded-xl"
+                 onchange="previewImage(event,'prev-image')">
+          <img id="prev-image" class="w-40 mt-2 rounded-xl hidden">
+
+          <button class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700">
+            Добавить новость
+          </button>
+        </form>
+
+        <div class="flex overflow-x-auto space-x-4 pb-2">
+          {% for n in news %}
+            <div class="min-w-[250px] relative bg-white rounded-xl shadow flex-shrink-0">
+              <a href="/ligovckij-prospekt/admin/delete-news?index={{ n.index }}&user_id={{ user_id }}"
+                 class="absolute top-1 right-2 text-white bg-red-500 px-2 py-1 text-sm rounded hover:bg-red-600">✖</a>
+              <img src="{{ n.cover }}" class="w-full h-32 object-cover rounded-t-xl" alt="">
+              <div class="p-2 text-xs truncate"><strong>{{ n.title }}</strong></div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- ░░ Пользователи ░░ -->
+      <div class="bg-white rounded-2xl shadow p-4">
+        <h2 class="text-xl font-semibold mb-3">👤 Пользователи</h2>
+
+        <form method="get" action="/ligovckij-prospekt/__admin_hidden_qwErTY456" class="flex gap-2 mb-4">
+          <input type="hidden" name="user_id" value="{{ user_id }}">
+          <input name="search_uid" placeholder="ID пользователя"
+                 value="{{ search_uid }}" class="border p-2 rounded-xl flex-grow">
+          <button class="bg-blue-600 text-white px-4 py-2 rounded-xl">Найти</button>
+        </form>
+
+        {% if search_uid %}
+        <div class="space-y-2 text-sm">
+          <p>ID: <code>{{ search_uid }}</code></p>
+          <p>Блокировка: <b>{{ 'Да' if user_rule.ban else 'Нет' }}</b></p>
+          <p>Наценка: <b>{{ user_rule.extra or 0 }} %</b></p>
+          <p>Скидка: <b>{{ user_rule.discount or 0 }} %</b></p>
+
+          <form action="/ligovckij-prospekt/admin/set-user-rule" method="post" class="space-y-3">
+            <input type="hidden" name="user_id"    value="{{ user_id }}">
+            <input type="hidden" name="target_uid" value="{{ search_uid }}">
+
+            <label class="inline-flex items-center gap-2">
+              <input type="checkbox" name="ban"
+                     class="w-4 h-4"
+                     {% if user_rule.ban %}checked{% endif %}>
+              <span>Заблокирован</span>
+            </label>
+
+            <label class="block text-sm font-medium">Наценка %</label>
+            <input type="number" name="extra" step="1"
+                   class="w-full border rounded px-2 py-1"
+                   min="0" max="100"
+                   value="{{ user_rule.extra if user_rule.extra is not none else '' }}">
+
+            <label class="block text-sm font-medium mt-2">Скидка %</label>
+            <input type="number" name="discount" step="1"
+                   class="w-full border rounded px-2 py-1"
+                   min="0" max="100"
+                   value="{{ user_rule.discount if user_rule.discount is not none else '' }}">
+
+            <button class="w-full bg-green-600 hover:bg-green-700 text-white py-1.5 rounded">
+              ✅ Сохранить
+            </button>
+          </form>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- ░░ График работы ░░ -->
+      <div class="bg-white rounded-2xl shadow p-4">
+        <h2 class="text-xl font-semibold mb-3">🕒 График работы</h2>
+
+        <form action="/ligovckij-prospekt/admin/set-schedule" method="post" class="grid gap-3">
+          <input type="hidden" name="user_id" value="{{ user_id }}">
+
+          <label class="block">
+            Время самовывоза:
+            <input type="text" name="pickup_times" placeholder="напр. 12:00, 14:00, 18:00"
+                   value="{{ schedule.pickup | join(', ') }}"
+                   class="w-full border p-2 rounded-xl">
+          </label>
+
+          <label class="block">
+            Время доставки:
+            <input type="text" name="delivery_times" placeholder="напр. 13:00, 15:00, 19:30"
+                   value="{{ schedule.delivery | join(', ') }}"
+                   class="w-full border p-2 rounded-xl">
+          </label>
+
+          <button class="bg-indigo-600 text-white px-4 py-2 rounded-xl hover:bg-indigo-700">Сохранить график</button>
+        </form>
+      </div>
+
+      <!-- ░░ Добавить товар ░░ -->
+      <div class="bg-white rounded-2xl shadow p-4">
+        <h2 class="text-xl font-semibold mb-3">➕ Добавить товар</h2>
+
+        <form action="/ligovckij-prospekt/admin/add-product" method="post" enctype="multipart/form-data" class="grid gap-2">
+          <input type="hidden" name="user_id" value="{{ user_id }}">
+
+          <input name="title" placeholder="Название" class="border p-2 rounded-xl">
+
+          <label class="block">Категория
+            <select name="category" class="border p-2 rounded-xl w-full" required>
+              <option value="" disabled selected>— выберите —</option>
+              {% for c in categories %}
+                <option value="{{ c }}">{{ c }}</option>
+              {% endfor %}
+            </select>
+          </label>
+
+          <input name="price"     type="number" placeholder="Цена" class="border p-2 rounded-xl">
+          <input name="old_price" type="number" placeholder="Старая цена (необязательно)" class="border p-2 rounded-xl">
+
+          <input type="file" name="image" accept="image/*" required
+                 class="border p-2 rounded-xl" onchange="previewImage(event,'prev-product')">
+          <img id="prev-product" class="w-40 mt-2 rounded-xl hidden">
+
+          <textarea name="description" placeholder="Описание" class="border p-2 rounded-xl"></textarea>
+          <input name="flavors" placeholder="Вкусы (через запятую)" class="border p-2 rounded-xl">
+
+          <button class="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700">Добавить товар</button>
+        </form>
+      </div>
+
+      <!-- ░░ Поиск и список товаров ░░ -->
+      <div class="bg-white rounded-2xl shadow p-4">
+        <input id="search" type="text" placeholder="Поиск товаров..."
+               class="w-full border p-2 rounded-xl mb-4">
+
+        <div id="products" class="space-y-2">
+          {% for p in products %}
+            <div class="bg-white p-4 rounded-2xl shadow product relative">
+              <a href="/ligovckij-prospekt/admin/delete-product?id={{ p.id }}&user_id={{ user_id }}"
+                 class="absolute top-1 right-2 text-white bg-red-500 px-2 py-1 text-sm rounded hover:bg-red-600">✖</a>
+
+              <button class="absolute top-1 right-8 text-blue-600 bg-white/80 px-2 py-1 text-sm rounded edit-product hover:bg-blue-50">✎</button>
+
+              <div class="flex justify-between items-center">
+                <div>
+                  <h3 class="text-lg font-bold">{{ p.title }}</h3>
+                  <p class="text-sm text-gray-600">
+                    {{ p.category }} — {{ p.price }} ₽
+                    {% if p.old_price and p.old_price|int > p.price|int %}
+                      <span class="line-through text-gray-400 text-xs ml-1">{{ p.old_price }} ₽</span>
+                    {% endif %}
+                  </p>
+                  <p class="text-sm">{{ p.description }}</p>
+                  {% if p.flavors %}
+                    <p class="text-xs text-gray-500">Вкусы: {{ p.flavors | join(', ') }}</p>
+                  {% endif %}
+                </div>
+                <img src="{{ p.image }}" class="w-20 h-20 rounded-xl object-cover" alt="">
+              </div>
+
+              <form action="/ligovckij-prospekt/admin/edit-product" method="post" enctype="multipart/form-data"
+                    class="hidden edit-form grid gap-1 text-xs mt-2">
+                <input type="hidden" name="user_id"    value="{{ user_id }}">
+                <input type="hidden" name="product_id" value="{{ p.id }}">
+
+                <input name="title"     value="{{ p.title }}"     class="border p-1 rounded">
+                <input name="price"     value="{{ p.price }}"     type="number" class="border p-1 rounded">
+                <input name="old_price" value="{{ p.old_price }}" type="number" class="border p-1 rounded">
+                <textarea name="description" class="border p-1 rounded">{{ p.description }}</textarea>
+                <input name="flavors"   value="{{ p.flavors | join(', ') }}" class="border p-1 rounded">
+
+                <label class="block text-xs">Категория:
+                  <select name="category" class="border p-1 rounded w-full" required>
+                    {% for c in categories %}
+                      <option value="{{ c }}" {% if c == p.category %}selected{% endif %}>{{ c }}</option>
+                    {% endfor %}
+                  </select>
+                </label>
+
+                <input type="file" name="image" accept="image/*" class="border p-1 rounded">
+
+                <button class="bg-green-600 text-white rounded py-1">💾</button>
+              </form>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    </section>
+  </div><!-- /grid -->
+</div>
+
+<script>
+/* поиск товаров */
+document.getElementById('search').addEventListener('input', e=>{
+  const v = e.target.value.toLowerCase();
+  document.querySelectorAll('.product').forEach(div=>{
+    div.style.display = div.innerText.toLowerCase().includes(v) ? '' : 'none';
+  });
+});
+
+/* превью картинок */
+function previewImage(e, id) {
+  const img = document.getElementById(id);
+  img.src = URL.createObjectURL(e.target.files[0]);
+  img.classList.remove('hidden');
+}
+
+/* кнопка ✎ для категорий */
+document.querySelectorAll('.edit-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const block = btn.parentElement;
+    block.querySelector('.rename-form').classList.toggle('hidden');
+    btn.classList.toggle('hidden');
+  });
+});
+
+/* кнопка ✎ для товаров */
+document.querySelectorAll('.edit-product').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    const productCard = btn.closest('.product');
+    const form = productCard.querySelector('.edit-form');
+    form.classList.toggle('hidden');
+  });
+});
+
+</script>
+</body>
+</html>

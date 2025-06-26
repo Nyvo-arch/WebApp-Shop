@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ product.title }}</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { font-family:'Inter', sans-serif; }
+    .cart-counter {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #22c55e;
+      color: #fff;
+      font-size: 12px;
+      padding: 0 6px;
+      border-radius: 9999px;
+    }
+    .pill {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 0.375rem 0.75rem;
+      border-radius: 9999px;
+      background-color: #f1f5f9;
+      color: #475569;
+      transition: all 0.2s;
+    }
+  </style>
+</head>
+<body class="bg-[#f1f5f9] text-gray-900">
+
+<div class="min-h-screen pb-24">
+  <div class="max-w-md mx-auto p-4">
+
+    {% if product.images %}
+      <div class="overflow-hidden rounded-xl mb-4 shadow">
+        <img src="{{ product.images[0] }}" alt="{{ product.title }}" class="w-full object-cover">
+      </div>
+    {% else %}
+      <img src="{{ product.image }}" alt="{{ product.title }}" class="w-full rounded-xl mb-4 shadow">
+    {% endif %}
+
+    <h1 class="text-xl font-bold mb-2">{{ product.title }}</h1>
+
+    <div class="bg-[#e8f3ff] rounded-xl p-3 mb-4 flex items-center space-x-2">
+      <span class="text-green-600 font-semibold text-lg">{{ product.price }} ₽</span>
+      {% if product.old_price and product.old_price|int > product.price|int %}
+        <span class="line-through text-gray-400 text-sm">{{ product.old_price }} ₽</span>
+        <span class="text-xs text-red-600">
+          −{{ ((1 - product.price / product.old_price) * 100)|round }}%
+        </span>
+      {% endif %}
+    </div>
+
+    <p class="text-sm mb-3 whitespace-pre-line">{{ product.description }}</p>
+
+    {% if product.flavors %}
+      <form id="add-detail" action="/ligovckij-prospekt/add-to-cart" method="post" class="space-y-3">
+        <input type="hidden" name="user_id" value="{{ user_id }}">
+        <input type="hidden" name="product_id" value="{{ product.id }}">
+
+        <div class="border rounded-2xl p-4">
+          <p class="font-semibold mb-2">Выберите вкусы:</p>
+          <div class="space-y-2">
+            {% for f in product.flavors %}
+              <label class="flex items-center gap-3">
+                <input type="checkbox" name="flavors[]" value="{{ f }}" class="w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500">
+                <span class="text-sm text-gray-800">{{ f }}</span>
+              </label>
+            {% endfor %}
+          </div>
+        </div>
+
+        <button class="w-full bg-green-600 text-white py-2 rounded-xl">
+          Добавить в корзину
+        </button>
+      </form>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Нижняя навигация -->
+<nav class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg z-50">
+  <div class="flex justify-around">
+    <a href="/ligovckij-prospekt/?user_id={{ user_id }}"
+       class="flex flex-col items-center py-3 text-gray-600 hover:text-green-600 active:text-green-700 transition-colors">
+      <span class="text-2xl mb-1">🏠</span>
+      <span class="text-xs">Главная</span>
+    </a>
+
+    <a href="/ligovckij-prospekt/cart?user_id={{ user_id }}"
+       class="relative flex flex-col items-center py-3 text-gray-600 hover:text-green-600 active:text-green-700 transition-colors">
+      <span class="text-2xl mb-1">🛒</span>
+      <span class="text-xs">Корзина</span>
+      <span id="cart-count"
+            class="absolute top-1 right-6 inline-flex items-center justify-center h-5 min-w-[20px] px-1 text-[10px] font-medium text-white bg-black rounded-full">
+        0
+      </span>
+    </a>
+
+    <a href="/ligovckij-prospekt/account?user_id={{ user_id }}"
+       class="flex flex-col items-center py-3 text-gray-600 hover:text-green-600 active:text-green-700 transition-colors">
+      <span class="text-2xl mb-1">👤</span>
+      <span class="text-xs">Профиль</span>
+    </a>
+  </div>
+</nav>
+
+<script>
+  const uid   = "{{ user_id }}",
+        badge = document.getElementById('cart-count');
+
+  if (uid) {
+    fetch(`/ligovckij-prospekt/cart/count?user_id=${uid}`)
+      .then(r => r.json())
+      .then(d => {
+        if (d.count) {
+          badge.textContent = d.count;
+          badge.classList.remove('hidden');
+        }
+      });
+  }
+
+  document.getElementById('add-detail').addEventListener('submit', async e => {
+    e.preventDefault();
+    const fd = new FormData();
+
+    const userId = document.querySelector('input[name="user_id"]').value;
+    const productId = document.querySelector('input[name="product_id"]').value;
+    const selectedFlavors = Array.from(document.querySelectorAll('input[name="flavors[]"]:checked'))
+                                 .map(cb => cb.value);
+
+    for (const flavor of selectedFlavors) {
+      fd.set('user_id', userId);
+      fd.set('product_id', productId);
+      fd.set('flavor', flavor);
+
+      await fetch('/ligovckij-prospekt/add-to-cart', { method: 'POST', body: fd });
+    }
+
+    // обновим счётчик и перекинем на главную
+    const res = await fetch(`/ligovckij-prospekt/cart/count?user_id=${userId}`);
+    const d = await res.json();
+    badge.textContent = d.count;
+    badge.classList.remove('hidden');
+    window.location.href = `/ligovckij-prospekt/?user_id=${userId}`;
+  });
+</script>
+
+</body>
+</html>

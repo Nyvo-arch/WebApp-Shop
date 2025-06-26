@@ -1,0 +1,62 @@
+[
+  {
+    "id": "253921f0",
+    "title": "д",
+    "category": "re",
+    "price": 2000,
+    "old_price": 2300,
+    "description": "",
+    "image": "/static/products/product_8811f077.jpg",
+    "flavors": [
+      "банан",
+      "апельсин",
+      "лимон",
+      "маракуйя",
+      "киви"
+    ]
+  },
+  {
+    "id": "d7125bb0",
+    "title": "б",
+    "category": "писька",
+    "price": 1000,
+    "old_price": 2000,
+    "description": "fewff fewff fewff fewff fewff fewff fewff ",
+    "image": "/static/products/product_16da7376.png",
+    "flavors": [
+      "банан",
+      "апельсин",
+      "лимон",
+      "маракуйя",
+      "киви"
+    ]
+  },
+  {
+    "id": "69f49963",
+    "title": "в",
+    "category": "писька",
+    "price": 3000,
+    "old_price": null,
+    "description": "акупе пекпкеп кеп екп ке пк пкеп кеп кепке",
+    "image": "/static/products/product_fd0e5e88.png",
+    "flavors": [
+      "банан",
+      "апельсин",
+      "лимон"
+    ]
+  },
+  {
+    "id": "8b220793",
+    "title": "г",
+    "category": "жопа",
+    "price": 4000,
+    "old_price": 5000,
+    "description": "пекпке пкепекп нр гн огнон о огногногн ",
+    "image": "/static/products/product_53ad843d.png",
+    "flavors": [
+      "банан",
+      "апельсин",
+      "лимон"
+    ]
+  }
+]

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VAPE SHOP</title>
+
+  <!-- Tailwind + Inter -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+  /* Бегущая строка с акциями */
+  .ticker-wrapper {
+    background: linear-gradient(90deg, #000000, #1a1a1a, #333333, #1a1a1a, #000000);
+    background-size: 100% 100%;
+    animation: gradientShift 2s ease-in-out infinite;
+    padding: 10px 0;
+    overflow: hidden;
+    position: relative;
+    margin: 0 -1rem 0.5rem -1rem;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .ticker-content {
+    display: flex;
+    animation: scroll 15s linear infinite;
+    white-space: nowrap;
+  }
+
+  @keyframes scroll {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  .ticker-item {
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.8px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    padding: 0 2rem;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .ticker-item::after {
+    content: "•";
+    margin-left: 2rem;
+    opacity: 0.7;
+  }
+
+  .ticker-item:last-child::after {
+    display: none;
+  }
+
+  /* Дополнительный эффект "дымки" для перехода */
+  .gradient-transition::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      radial-gradient(ellipse at 30% 0%, rgba(255,255,255,0.1) 0%, transparent 70%),
+      radial-gradient(ellipse at 70% 0%, rgba(255,255,255,0.05) 0%, transparent 70%);
+    animation: smokeFlow 6s ease-in-out infinite;
+  }
+
+  @keyframes smokeFlow {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 0.6; transform: scaleY(1.1); }
+  }
+  </style>
+  <style>
+  /* Анимированный заголовок BLACK */
+  .brand-header {
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+    position: relative;
+    overflow: hidden;
+    margin: -1rem -1rem 1.5rem -1rem;
+    padding: 2rem 1rem;
+  }
+
+  .brand-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    animation: shine 3s infinite;
+  }
+
+  @keyframes shine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  .brand-logo {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #ffffff;
+    text-align: center;
+    letter-spacing: 0.5rem;
+    text-shadow: 0 0 20px rgba(255,255,255,0.3);
+    position: relative;
+    z-index: 2;
+    animation: pulse 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulse {
+    0% { text-shadow: 0 0 20px rgba(255,255,255,0.3); }
+    100% { text-shadow: 0 0 30px rgba(255,255,255,0.6), 0 0 40px rgba(255,255,255,0.2); }
+  }
+
+  .brand-subtitle {
+    color: #a0a0a0;
+    text-align: center;
+    font-size: 0.9rem;
+    letter-spacing: 0.3rem;
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+    opacity: 0;
+    animation: fadeInUp 1s ease-out 0.5s forwards;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Дымовой эффект */
+  .smoke-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+      radial-gradient(circle at 20% 50%, rgba(255,255,255,0.03) 0%, transparent 50%),
+      radial-gradient(circle at 80% 30%, rgba(255,255,255,0.02) 0%, transparent 50%),
+      radial-gradient(circle at 40% 70%, rgba(255,255,255,0.01) 0%, transparent 50%);
+    animation: smokeFloat 4s ease-in-out infinite;
+  }
+
+  @keyframes smokeFloat {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(1deg); }
+  }
+  </style>
+  <style>
+    *{font-family:'Inter',sans-serif;}
+
+    /* кнопка «Купить» */
+    .buy-btn{
+      padding:12px 24px;border-radius:30px;border:0;width:100%;
+      background:#fff;box-shadow:0 0 8px rgb(0 0 0 / .05);
+      font-size:10px;letter-spacing:1.5px;text-transform:uppercase;
+      transition:.5s;
+    }
+    .buy-btn:hover   {letter-spacing:3px;background:#000;color:#fff;box-shadow:0 7px 29px rgb(0 0 0 / .5);}
+    .buy-btn:active  {transform:translateY(10px);transition:100ms;}
+
+    /* маленькие элементы UI */
+    .cart-counter{position:absolute;top:-8px;right:-8px;background:#22c55e;color:#fff;font-size:12px;padding:0 6px;border-radius:9999px;}
+    .pill        {display:inline-block;padding:.125rem .75rem;border-radius:9999px;font-size:12px;font-weight:500;background:#eef2ff;color:#475569;}
+    .badge-disc  {position:absolute;top:.5rem;left:.5rem;background:#ef4444;color:#fff;font-size:10px;padding:0 .5rem;border-radius:9999px;}
+  </style>
+</head>
+
+<body class="bg-[#f1f5f9] text-gray-900 pb-24">
+
+<div class="max-w-5xl mx-auto p-4">
+  <div class="brand-header">
+    <div class="smoke-effect"></div>
+    <h1 class="brand-logo">BLACK</h1>
+    <p class="brand-subtitle">Премиум вейп-шоп</p>
+  </div>
+
+  {# ------------ Новости ------------ #}
+  {% if news %}
+  <div class="overflow-x-auto flex space-x-4 mb-6">
+    {% for n in news %}
+      <a href="/ligovckij-prospekt/news/{{ n.index }}?user_id={{ user_id }}"
+         class="inline-block w-64 flex-shrink-0 rounded-xl overflow-hidden shadow">
+        <img src="{{ n.cover }}" class="w-full h-36 object-cover" alt="news">
+      </a>
+    {% endfor %}
+  </div>
+  {% endif %}
+    <div class="ticker-wrapper">
+    <div class="ticker-content">
+      <span class="ticker-item">🔥 СКИДКИ ДО 50%</span>
+      <span class="ticker-item">🏆 1000+ ДОВОЛЬНЫХ КЛИЕНТОВ</span>
+      <span class="ticker-item">⚡ НОВИНКИ КАЖДЫЙ ДЕНЬ</span>
+      <span class="ticker-item">🚀 БЫСТРАЯ ДОСТАВКА</span>
+      <span class="ticker-item">💎 ТОЛЬКО ОРИГИНАЛ</span>
+      <span class="ticker-item">🎁 БОНУСЫ ЗА ПОКУПКИ</span>
+      <span class="ticker-item">📱 ЗАКАЗ В 1 КЛИК</span>
+      <span class="ticker-item">⭐ РЕЙТИНГ 4.9/5</span>
+    </div>
+  </div>
+  {# ------------ Поиск ------------ #}
+  <input id="search" type="text" placeholder="Поиск..."
+         class="w-full border p-2 rounded-xl mb-2">
+
+  {# ------------ Фильтр / сортировка ------------ #}
+  <div class="flex gap-2 mb-4">
+    <select id="category-filter" class="flex-1 border p-2 rounded-xl bg-white">
+      <option value="">Все категории</option>
+      {% set cats = products | map(attribute='category') | unique | list %}
+      {% for c in cats %}<option value="{{ c }}">{{ c }}</option>{% endfor %}
+    </select>
+
+    <select id="sort-order" class="w-44 border p-2 rounded-xl bg-white">
+      <option value="none">Сортировка</option>
+      <option value="asc">Цена ↑</option>
+      <option value="desc">Цена ↓</option>
+      <option value="alpha-asc">A&nbsp;→&nbsp;Я</option>
+      <option value="alpha-desc">Я&nbsp;→&nbsp;A</option>
+    </select>
+  </div>
+
+  {# ------------ Товары ------------ #}
+  <div id="products" class="space-y-4">
+    {% for p in products %}
+    <div class="relative bg-white rounded-3xl shadow flex overflow-hidden product w-[380px] mx-auto"
+         data-category="{{ p.category }}" data-price="{{ p.price }}">
+      <a href="/ligovckij-prospekt/product/{{ p.id }}?user_id={{ user_id }}" class="absolute inset-0 z-0"></a>
+
+      <div class="w-[46%] max-h-44 shrink-0">
+        <img src="{{ p.image }}" alt="{{ p.title }}" class="w-full h-full object-cover">
+      </div>
+
+      <div class="w-[54%] p-3 pr-2 flex flex-col justify-between text-[12px] leading-snug relative z-10">
+        <h3 class="text-[18px] font-bold mb-0.5 truncate">{{ p.title }}</h3>
+
+
+        <div class="flex items-center gap-1 mb-1">
+          <span class="text-green-600 font-semibold text-[16px]">{{ p.price }} ₽</span>
+          {% if p.old_price and p.old_price|int > p.price|int %}
+            <span class="line-through text-slate-400 text-[12px]">{{ p.old_price }} ₽</span>
+            <span class="text-[10px] bg-red-500 text-white px-1 py-[1px] rounded-full">
+              −{{ ((1 - p.price / p.old_price) * 100)|round }}%
+            </span>
+          {% endif %}
+        </div>
+
+        {% if p.flavors %}
+        <div class="flex flex-wrap gap-[2px] mb-2">
+          {% for f in p.flavors[:3] %}<span class="pill">{{ f }}</span>{% endfor %}
+          {% if p.flavors|length > 3 %}<span class="pill">ещё {{ p.flavors|length - 3 }}</span>{% endif %}
+        </div>
+        {% endif %}
+
+        <form action="/ligovckij-prospekt/add-to-cart" method="post" class="add-form mt-auto relative z-20">
+          <input type="hidden" name="user_id"    value="{{ user_id }}">
+          <input type="hidden" name="product_id" value="{{ p.id }}">
+          <button type="submit" class="buy-btn">Купить</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{# ------------ Нижняя навигация ------------ #}
+<nav class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg z-50">
+  <div class="flex justify-around items-center py-2">
+    <a href="/ligovckij-prospekt/?user_id={{ user_id }}" class="flex flex-col items-center text-gray-700 hover:text-green-600 transition-colors">
+      <img src="/static/icons/free-icon-home-1946488.png" alt="Главная" class="w-6 h-6 mb-1">
+      <span class="text-[13px] font-semibold">Главная</span>
+    </a>
+
+    <a href="/ligovckij-prospekt/cart?user_id={{ user_id }}" class="relative flex flex-col items-center text-gray-700 hover:text-green-600 transition-colors">
+      <img src="/static/icons/free-icon-shopping-cart-1124199.png" alt="Корзина" class="w-6 h-6 mb-1">
+      <span class="text-[13px] font-semibold">Корзина</span>
+      <span id="cart-count"
+            class="absolute top-0 right-3 inline-flex items-center justify-center h-4 min-w-[18px] px-1 text-[10px] font-medium text-white bg-black rounded-full hidden">0</span>
+    </a>
+
+    <a href="/ligovckij-prospekt/account?user_id={{ user_id }}" class="flex flex-col items-center text-gray-700 hover:text-green-600 transition-colors">
+      <img src="/static/icons/free-icon-user-account-9143968.png" alt="Профиль" class="w-6 h-6 mb-1">
+      <span class="text-[13px] font-semibold">Профиль</span>
+    </a>
+  </div>
+</nav>
+
+{# ------------ Модальное окно ------------ #}
+<!-- ───── модалка ───── -->
+<div id="product-modal"
+     role="dialog" aria-modal="true"
+     class="fixed inset-0 z-[999] bg-black/60 backdrop-blur-sm flex items-center justify-center hidden">
+
+  <!-- «карточка» -->
+  <div class="relative bg-white rounded-3xl w-full max-w-md">
+
+    <!-- крестик: кружок + sticky -->
+    <button id="modal-close"
+            class="sticky top-3 right-3 ml-auto z-20
+                   flex items-center justify-center
+                   w-9 h-9 rounded-full
+                   bg-white border-2 border-black
+                   text-black text-xl leading-none">
+      &times;
+    </button>
+
+    <!-- прокручиваемое содержимое -->
+    <div id="product-modal-body"
+         class="max-h-[90vh] overflow-y-auto px-4 pb-6 pt-2">
+      <!-- сюда вставляется product_modal.html -->
+    </div>
+  </div>
+</div>
+
+
+{# ------------ Скрипты ------------ #}
+<script>
+/* корзина и фильтры */
+document.addEventListener('DOMContentLoaded', () => {
+  const productsContainer = document.getElementById('products');
+  const productElems      = [...document.querySelectorAll('.product')];
+  const searchInput       = document.getElementById('search');
+  const categoryFilter    = document.getElementById('category-filter');
+  const sortOrder         = document.getElementById('sort-order');
+  const badge             = document.getElementById('cart-count');
+  const uid               = "{{ user_id }}";
+
+  /* счётчик корзины */
+  if (uid){
+    fetch(`/ligovckij-prospekt/cart/count?user_id=${uid}`)
+      .then(r=>r.json())
+      .then(d=>{
+        if(d.count){ badge.textContent=d.count; badge.classList.remove('hidden'); }
+      });
+  }
+
+  /* быстрый add-to-cart (карточки в каталоге) */
+  document.querySelectorAll('.add-form').forEach(f=>{
+    f.addEventListener('submit', async e=>{
+      e.preventDefault();
+      const fd  = new FormData(f);
+      const res = await fetch('/ligovckij-prospekt/add-to-cart',{method:'POST',body:fd});
+      const d   = await res.json();
+      if(d.ok){ badge.textContent=d.count; badge.classList.remove('hidden'); }
+    });
+  });
+
+  /* фильтрация + сортировка */
+  function updateList(){
+    let list = productElems.filter(el=>{
+      const txt  = el.innerText.toLowerCase();
+      const byTxt= txt.includes(searchInput.value.toLowerCase());
+      const byCat= !categoryFilter.value || el.dataset.category===categoryFilter.value;
+      return byTxt && byCat;
+    });
+
+    switch(sortOrder.value){
+      case 'asc' : list.sort((a,b)=>+a.dataset.price-+b.dataset.price);break;
+      case 'desc': list.sort((a,b)=>+b.dataset.price-+a.dataset.price);break;
+      case 'alpha-asc' :
+        list.sort((a,b)=>a.querySelector('h3').textContent.trim()
+                          .localeCompare(b.querySelector('h3').textContent.trim(),'ru',{sensitivity:'base'}));
+        break;
+      case 'alpha-desc':
+        list.sort((a,b)=>b.querySelector('h3').textContent.trim()
+                          .localeCompare(a.querySelector('h3').textContent.trim(),'ru',{sensitivity:'base'}));
+        break;
+    }
+
+    productsContainer.innerHTML='';
+    list.forEach(el=>productsContainer.appendChild(el));
+  }
+  searchInput.addEventListener('input',updateList);
+  categoryFilter.addEventListener('change',updateList);
+  sortOrder     .addEventListener('change',updateList);
+});
+</script>
+
+<script>
+/* модальное окно товара */
+document.addEventListener('DOMContentLoaded', () => {
+  const modal      = document.getElementById('product-modal');
+  const modalBody  = document.getElementById('product-modal-body');
+  const modalClose = document.getElementById('modal-close');
+
+  /* открытие */
+  document.querySelectorAll('.product > a').forEach(link=>{
+    link.addEventListener('click', async ev=>{
+      ev.preventDefault();
+      const url  = link.href + (link.href.includes('?') ? '&' : '?') + 'modal=1';
+      const html = await (await fetch(url)).text();
+
+      modalBody.innerHTML = html;
+
+      /* ---- перехватываем форму внутри модалки ---- */
+      /* ---- перехватываем форму внутри модалки ---- */
+      /* перехват формы внутри модалки */
+      const addForm = modalBody.querySelector('#add-detail');
+      if (addForm) {
+        addForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+
+          /* проверяем: выбран ли хотя бы один чек-бокс flavours */
+          const hasFlavor =
+                addForm.querySelector('input[name="flavors"]:checked') !== null;
+          const flavorsExist =
+                addForm.querySelector('input[name="flavors"]') !== null;
+          if (flavorsExist && !hasFlavor) {
+            alert('Выберите хотя бы один вкус');
+            return;
+          }
+
+          const fd  = new FormData(addForm);          // соберёт все выбранные вкусы
+          const res = await fetch('/ligovckij-prospekt/add-to-cart',
+                                  { method: 'POST', body: fd });
+          const d   = await res.json();
+
+          if (d.ok) {
+            const badge = document.getElementById('cart-count');
+            badge.textContent = d.count;
+            badge.classList.remove('hidden');
+            hide();                                   // закрываем модалку
+          }
+        });
+      }
+
+
+      /* ------------------------------------------- */
+
+      modal.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    });
+  });
+
+  /* закрытие */
+  function hide(){
+    modal.classList.add('hidden');
+    modalBody.innerHTML = '';         // очищаем только динамику
+    document.body.classList.remove('overflow-hidden');
+  }
+  modalClose.addEventListener('click',hide);
+  modal.addEventListener('click',e=>{ if(e.target===modal) hide(); });
+});
+</script>
+
+</body>
+</html>

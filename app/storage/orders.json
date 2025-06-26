@@ -1,0 +1,857 @@
+[
+  {
+    "id": "1",
+    "user_id": "523525",
+    "items": [
+      {
+        "title": "вака",
+        "flavor": "",
+        "qty": 1,
+        "price": 1000
+      }
+    ],
+    "total": 1000,
+    "name": "123",
+    "phone": "123",
+    "address": "123",
+    "comment": "",
+    "created": "21.06.2025 14:14",
+    "delivery_type": "pickup",
+    "delivery_option": "metro",
+    "station": "",
+    "time": "12:00",
+    "status": "taken",
+    "courier_id": "6423631216",
+    "courier_name": "@barracudaw"
+  },
+  {
+    "id": "2",
+    "user_id": "523525",
+    "items": [
+      {
+        "title": "вака",
+        "flavor": null,
+        "qty": 2,
+        "price": 1000
+      },
+      {
+        "title": "вака",
+        "flavor": "апельсин",
+        "qty": 1,
+        "price": 1000
+      },
+      {
+        "title": "вака",
+        "flavor": "маракуйя",
+        "qty": 1,
+        "price": 1000
+      }
+    ],
+    "total": 4000,
+    "name": "t54t54",
+    "phone": "t54t54",
+    "address": "t54t54",
+    "customer_comment": "t54t45",
+    "created": "21.06.2025 14:35",
+    "delivery_type": "pickup",
+    "delivery_option": "metro",
+    "station": "",
+    "time": "12:00",
+    "status": "taken",
+    "courier_id": "6423631216",
+    "courier_name": "@barracudaw",
+    "courier_comment": ""
+  },
+  {
+    "id": "3",
+    "user_id": "523525",
+    "items": [
+      {
+        "title": "вака",
+        "flavor": null,
+        "qty": 6,
+        "price": 1000
+      }
+    ],
+    "total": 6000,
+    "name": "321",
+    "phone": "321",
+    "address": "3213",
+    "customer_comment": "21",
+    "created": "21.06.2025 15:03",
+    "delivery_type": "pickup",
+    "delivery_option": "metro",
+    "station": "",
+    "time": "12:00",
+    "status": "taken",
+    "courier_id": "6423631216",
+    "courier_name": "@barracudaw",
+    "courier_comment": ""
+  },
+  {
+    "id": "4",
+    "user_id": "523525",
+    "items": [
+      {
+        "title": "вака",
+        "flavor": null,
+        "qty": 7,
+        "price": 1000
+      }
+    ],
+    "total": 7000,
+    "name": "4321",
+    "phone": "321321",
+    "address": "321312",
+    "customer_comment": "31231",
+    "created": "21.06.2025 15:14",
+    "delivery_type": "pickup",
+    "delivery_option": "metro",
+    "station": "",
+    "time": "12:00",
+    "status": "done",
+    "courier_id": "6423631216",
+    "courier_name": "@barracudaw",
+    "courier_comment": "rtgrgtrg"
+  },
+  {
+    "id": "5",
+    "user_id": "523525",
+    "items": [
+      {
+        "title": "вака",
+        "flavor": null,
+        "qty": 4,
+        "price": 1000
+      }
+    ],
+    "total": 4000,
+    "name": "3213123",
+    "phone": "23123213",
+    "address": "12321312",
+    "customer_comment": "3213131",
+    "created": "21.06.2025 15:14",
+    "delivery_type": "pickup",
+    "delivery_option": "metro",
+    "station": "",
+    "time": "12:00",
+    "status": "taken",
+    "courier_id": "1068044660",
+    "courier_name": "@automataxxx",
+    "courier_comment": ""
+  },
+  {
+    "id": "6",
+    "user_id": "523525",
+    "items": [
+      {
+        "title": "вака",
+        "flavor": "апельсин",
+        "qty": 2,
+        "price": 1000
+      },
+      {
+        "title": "вака",
+        "flavor": "лимон",
+        "qty": 2,
+        "price": 1000
+      }
+    ],
+    "total": 4000,
+    "name": "Мусульманин1488",
+    "phone": "мой номер",
+    "address": "адрес",
+    "customer_comment": "43к3к",
+    "created": "21.06.2025 22:40",
+    "delivery_type": "delivery",
+    "delivery_option": "metro",
+    "station": "Курская",
+    "time": "12:00",
+    "status": "taken",
+    "courier_id": "1068044660",
+    "courier_name": "@automataxxx",
+    "courier_comment": ""
+  },
+  {
+    "id": "7",
+    "user_id": "1068044660",
+    "items": [
+      {
+        "title": "вака",
+        "flavor": null,
+        "qty": 2,
+        "price": 1000
+      }
+    ],
+    "total": 2000,
+    "name": "321",
+    "phone": "321",
+    "address": "321",
+    "customer_comment": "321",
+    "created": "21.06.2025 22:51",
+    "delivery_type": "pickup",
+    "delivery_option": "metro",
+    "station": "",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "8",
+    "user_id": "324324",
+    "items": [
+      {
+        "title": "вака",
+        "flavor": null,
+        "qty": 1,
+        "price": 1000
+      }
+    ],
+    "total": 1000,
+    "name": "432432",
+    "phone": "+7 432 432-43-24",
+    "address": "432423",
+    "customer_comment": "43244",
+    "created": "22.06.2025 12:02",
+    "delivery_type": "delivery",
+    "delivery_option": "metro",
+    "station": "Курская",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "9",
+    "user_id": "324324",
+    "items": [
+      {
+        "title": "вака",
+        "flavor": null,
+        "qty": 2,
+        "price": 1000
+      }
+    ],
+    "total": 2000,
+    "name": "432432",
+    "phone": "+7 432 432-43-24",
+    "address": "432423",
+    "customer_comment": "к43е45е",
+    "created": "22.06.2025 12:02",
+    "delivery_type": "delivery",
+    "delivery_option": "metro",
+    "station": "Курская",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "10",
+    "user_id": "324324",
+    "items": [
+      {
+        "title": "вака",
+        "flavor": null,
+        "qty": 1,
+        "price": 1000
+      },
+      {
+        "title": "вака",
+        "flavor": null,
+        "qty": 1,
+        "price": 1000
+      },
+      {
+        "title": "вака",
+        "flavor": "банан",
+        "qty": 1,
+        "price": 1000
+      },
+      {
+        "title": "вака",
+        "flavor": "апельсин",
+        "qty": 1,
+        "price": 1000
+      },
+      {
+        "title": "вака",
+        "flavor": "лимон",
+        "qty": 1,
+        "price": 1000
+      }
+    ],
+    "total": 5000,
+    "name": "Денис",
+    "phone": "+7 654 234-34-23",
+    "address": "4324324",
+    "customer_comment": "434234324",
+    "created": "22.06.2025 12:06",
+    "delivery_type": "pickup",
+    "delivery_option": "metro",
+    "station": "",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "11",
+    "user_id": "324324",
+    "items": [
+      {
+        "title": "вака",
+        "flavor": null,
+        "qty": 3,
+        "price": 1000
+      }
+    ],
+    "total": 3000,
+    "name": "пепкепк",
+    "phone": "+7 432 432-43-24",
+    "address": "3243244324",
+    "customer_comment": "432432432",
+    "created": "22.06.2025 12:07",
+    "delivery_type": "delivery",
+    "delivery_option": "metro",
+    "station": "Говно",
+    "time": "18:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "12",
+    "user_id": "324324",
+    "items": [
+      {
+        "title": "вака",
+        "flavor": null,
+        "qty": 1,
+        "price": 1000
+      }
+    ],
+    "total": 1000,
+    "name": "пепкепк",
+    "phone": "+7 432 432-43-24",
+    "address": "3243244324",
+    "customer_comment": "пеккпекп",
+    "created": "22.06.2025 12:24",
+    "delivery_type": "delivery",
+    "delivery_option": "metro",
+    "station": "Курская",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "13",
+    "user_id": "123123",
+    "items": [
+      {
+        "title": "а",
+        "flavor": "банан",
+        "qty": 1,
+        "price": 2000
+      },
+      {
+        "title": "а",
+        "flavor": "апельсин",
+        "qty": 1,
+        "price": 2000
+      },
+      {
+        "title": "а",
+        "flavor": "лимон",
+        "qty": 1,
+        "price": 2000
+      }
+    ],
+    "total": 6000,
+    "name": "пепкепк",
+    "phone": "+7 432 432-43-24",
+    "address": "3243244324",
+    "customer_comment": "4324234",
+    "created": "22.06.2025 15:15",
+    "delivery_type": "delivery",
+    "delivery_option": "metro",
+    "station": "Курская",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "14",
+    "user_id": "123123",
+    "items": [
+      {
+        "title": "а",
+        "flavor": null,
+        "qty": 1,
+        "price": 2000
+      }
+    ],
+    "total": 2000,
+    "name": "пепкепк",
+    "phone": "+7 432 432-43-24",
+    "address": "3243244324",
+    "customer_comment": "",
+    "created": "22.06.2025 15:16",
+    "delivery_type": "pickup",
+    "delivery_option": "metro",
+    "station": "",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "15",
+    "user_id": "123123",
+    "items": [
+      {
+        "title": "а",
+        "flavor": null,
+        "qty": 2,
+        "price": 2000
+      }
+    ],
+    "total": 4000,
+    "name": "пепкепк",
+    "phone": "+7 432 432-43-24",
+    "address": "3243244324",
+    "customer_comment": "",
+    "created": "22.06.2025 16:10",
+    "delivery_type": "pickup",
+    "delivery_option": "metro",
+    "station": "",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "16",
+    "user_id": "123123",
+    "items": [
+      {
+        "title": "а",
+        "flavor": null,
+        "qty": 1,
+        "price": 1800
+      }
+    ],
+    "total": 1800,
+    "name": "пепкепк",
+    "phone": "+7 432 432-43-24",
+    "address": "3243244324",
+    "customer_comment": "",
+    "created": "22.06.2025 16:46",
+    "delivery_type": "pickup",
+    "delivery_option": "metro",
+    "station": "",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "17",
+    "user_id": "1068044660",
+    "items": [
+      {
+        "title": "а",
+        "flavor": null,
+        "qty": 1,
+        "price": 2000
+      }
+    ],
+    "total": 2000,
+    "name": "пепкепк",
+    "phone": "+7 432 432-43-24",
+    "address": "3243244324",
+    "customer_comment": "",
+    "created": "22.06.2025 16:50",
+    "delivery_type": "pickup",
+    "delivery_option": "metro",
+    "station": "",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "18",
+    "user_id": "6423631216",
+    "items": [
+      {
+        "title": "а",
+        "flavor": null,
+        "qty": 7,
+        "price": 2200
+      }
+    ],
+    "total": 15400,
+    "name": "пепкепк",
+    "phone": "+7 432 432-43-24",
+    "address": "3243244324",
+    "customer_comment": "",
+    "created": "22.06.2025 17:18",
+    "delivery_type": "pickup",
+    "delivery_option": "metro",
+    "station": "",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "19",
+    "user_id": "6423631216",
+    "items": [
+      {
+        "title": "а",
+        "flavor": null,
+        "qty": 2,
+        "price": 2200
+      }
+    ],
+    "total": 4400,
+    "name": "пепкепк",
+    "phone": "+7 654 234-34-23",
+    "address": "4324324",
+    "customer_comment": "",
+    "created": "22.06.2025 21:19",
+    "delivery_type": "pickup",
+    "delivery_option": "metro",
+    "station": "",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "20",
+    "user_id": "6423631216",
+    "items": [
+      {
+        "title": "а",
+        "flavor": null,
+        "qty": 3,
+        "price": 2200
+      }
+    ],
+    "total": 6600,
+    "name": "пепкепк",
+    "phone": "+7 654 234-34-23",
+    "address": "4324324",
+    "customer_comment": "",
+    "created": "22.06.2025 22:10",
+    "delivery_type": "pickup",
+    "delivery_option": "metro",
+    "station": "",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "21",
+    "user_id": "123321",
+    "items": [
+      {
+        "title": "а",
+        "flavor": null,
+        "qty": 3,
+        "price": 2000
+      }
+    ],
+    "total": 6000,
+    "name": "пепкепк",
+    "phone": "+7 654 234-34-23",
+    "address": "4324324",
+    "customer_comment": "",
+    "created": "24.06.2025 23:13",
+    "delivery_type": "delivery",
+    "delivery_option": "metro",
+    "station": "Таганская",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "22",
+    "user_id": "123321",
+    "items": [
+      {
+        "title": "а",
+        "flavor": null,
+        "qty": 1,
+        "price": 2000
+      }
+    ],
+    "total": 2000,
+    "name": "Денис Андреевич Туманов",
+    "phone": "+7 917 526-82-71",
+    "address": "43432442",
+    "customer_comment": "gtrgtrg",
+    "created": "24.06.2025 23:20",
+    "delivery_type": "delivery",
+    "delivery_option": "metro",
+    "station": "Автово",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "23",
+    "user_id": "123321",
+    "items": [
+      {
+        "title": "а",
+        "flavor": null,
+        "qty": 1,
+        "price": 2000
+      },
+      {
+        "title": "а",
+        "flavor": "банан",
+        "qty": 1,
+        "price": 2000
+      },
+      {
+        "title": "а",
+        "flavor": "апельсин",
+        "qty": 1,
+        "price": 2000
+      },
+      {
+        "title": "а",
+        "flavor": "лимон",
+        "qty": 1,
+        "price": 2000
+      },
+      {
+        "title": "а",
+        "flavor": "маракуйя",
+        "qty": 1,
+        "price": 2000
+      }
+    ],
+    "total": 10000,
+    "name": "Мусульманин1488",
+    "phone": "+7 917 526-82-71",
+    "address": "Дом ебли твоей мамки",
+    "customer_comment": "к32к32к",
+    "created": "25.06.2025 00:01",
+    "delivery_type": "delivery",
+    "delivery_option": "metro",
+    "station": "Лиговский проспект",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "24",
+    "user_id": "24214",
+    "items": [
+      {
+        "title": "а",
+        "flavor": null,
+        "qty": 1,
+        "price": 2000
+      }
+    ],
+    "total": 2000,
+    "name": "Мусульманин1488",
+    "phone": "+7 917 526-82-71",
+    "address": "",
+    "customer_comment": "gtrgtrg",
+    "created": "25.06.2025 22:35",
+    "delivery_type": "pickup",
+    "delivery_option": "metro",
+    "station": "",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "25",
+    "user_id": "24214",
+    "items": [
+      {
+        "title": "а",
+        "flavor": null,
+        "qty": 3,
+        "price": 2000
+      }
+    ],
+    "total": 6000,
+    "name": "Мусульманин1488",
+    "phone": "+7 917 526-82-71",
+    "address": "",
+    "customer_comment": "",
+    "created": "25.06.2025 23:13",
+    "delivery_type": "pickup",
+    "delivery_option": "metro",
+    "station": "",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "26",
+    "user_id": "24214",
+    "items": [
+      {
+        "title": "а",
+        "flavor": null,
+        "qty": 4,
+        "price": 2000
+      }
+    ],
+    "total": 8000,
+    "name": "Мусульманин1488",
+    "phone": "+7 917 526-82-71",
+    "address": "",
+    "customer_comment": "",
+    "created": "25.06.2025 23:13",
+    "delivery_type": "pickup",
+    "delivery_option": "metro",
+    "station": "",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "27",
+    "user_id": "24214",
+    "items": [
+      {
+        "title": "в",
+        "flavor": "апельсин",
+        "qty": 2,
+        "price": 3000
+      },
+      {
+        "title": "в",
+        "flavor": "лимон",
+        "qty": 1,
+        "price": 3000
+      }
+    ],
+    "total": 9000,
+    "name": "Денис Андреевич Туманов",
+    "phone": "+7 917 526-82-71",
+    "address": "",
+    "customer_comment": "gtrgtrg",
+    "created": "26.06.2025 00:55",
+    "delivery_type": "pickup",
+    "delivery_option": "metro",
+    "station": "",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "28",
+    "user_id": "6423631216",
+    "items": [
+      {
+        "title": "а",
+        "flavor": null,
+        "qty": 1,
+        "price": 2000
+      }
+    ],
+    "total": 2000,
+    "name": "Денис Андреевич Туманов",
+    "phone": "+7 917 526-82-71",
+    "address": "",
+    "customer_comment": "",
+    "created": "26.06.2025 23:59",
+    "delivery_type": "pickup",
+    "delivery_option": "metro",
+    "station": "",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  },
+  {
+    "id": "29",
+    "user_id": "6423631216",
+    "items": [
+      {
+        "title": "д",
+        "flavor": null,
+        "qty": 2,
+        "price": 2000
+      },
+      {
+        "title": "б",
+        "flavor": null,
+        "qty": 1,
+        "price": 1000
+      },
+      {
+        "title": "в",
+        "flavor": "банан",
+        "qty": 1,
+        "price": 3000
+      },
+      {
+        "title": "в",
+        "flavor": "апельсин",
+        "qty": 1,
+        "price": 3000
+      }
+    ],
+    "total": 11000,
+    "name": "Денис Андреевич Туманов",
+    "phone": "+7 917 526-82-71",
+    "address": "",
+    "customer_comment": "gtrgtrg",
+    "created": "27.06.2025 00:38",
+    "delivery_type": "pickup",
+    "delivery_option": "metro",
+    "station": "",
+    "time": "12:00",
+    "status": "new",
+    "courier_id": null,
+    "courier_name": "",
+    "courier_comment": ""
+  }
+]

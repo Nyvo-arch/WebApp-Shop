@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="text-3xl font-bold text-gray-800 mb-4 text-center"
+    style="font-family: Menlo, Consolas, 'Courier New', monospace;">
+    Оформление заказа
+</h2>
+<style>
+.checkout-btn {
+  padding: 15px 25px;
+  border: unset;
+  border-radius: 15px;
+  color: #212121;
+  z-index: 1;
+  background: #e8e8e8;
+  position: relative;
+  font-weight: 1000;
+  font-size: 17px;
+  -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+  box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+  transition: all 250ms;
+  overflow: hidden;
+}
+
+.checkout-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  border-radius: 15px;
+  background-color: #212121;
+  z-index: -1;
+  -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+  box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
+  transition: all 250ms;
+}
+
+.checkout-btn:hover {
+  color: #e8e8e8;
+}
+
+.checkout-btn:hover::before {
+  width: 100%;
+}
+</style>
+
+<form action="/ligovckij-prospekt/checkout" method="post" class="space-y-4">
+  <input type="hidden" name="user_id" value="{{ user_id }}">
+
+  <!-- Имя -------------------------------------------------------------- -->
+  <input name="name"
+         placeholder="Имя"
+         class="w-full border p-2 rounded-xl"
+         required>
+
+  <!-- Телефон ---------------------------------------------------------- -->
+  <input type="tel"
+         name="phone"
+         placeholder="+7 999 999-99-99"
+         class="w-full border p-2 rounded-xl"
+         pattern="\+7\s\d{3}\s\d{3}-\d{2}-\d{2}"
+         title="Формат: +7 999 999-99-99"
+         required>
+
+  <!-- Способ получения ------------------------------------------------- -->
+  <div>
+    <label class="block mb-1 font-medium">Способ получения:</label>
+    <div class="flex gap-4">
+      <label>
+        <input type="radio" name="delivery_type" value="pickup" class="mr-1" checked>
+        Самовывоз
+      </label>
+      <label>
+        <input type="radio" name="delivery_type" value="delivery" class="mr-1">
+        Доставка
+      </label>
+    </div>
+  </div>
+
+  <!-- Доставка --------------------------------------------------------- -->
+  <div id="delivery-options" class="hidden space-y-3">
+    <label class="block font-medium">Тип доставки:</label>
+    <select name="delivery_option" class="w-full border p-2 rounded-xl">
+      <option value="metro">К метро — 300 ₽</option>
+      <option value="near_metro">До 1.5 км от метро — 500 ₽</option>
+      <option value="far_metro">Дальше 1.5 км — 1000 ₽</option>
+    </select>
+
+    <!-- Станция метро (поиск внутри списка) --------------------------- -->
+    <label class="block font-medium mb-1">
+      Станция метро:
+      <span id="station-hint" class="ml-2 text-gray-500 text-sm"></span>
+    </label>
+
+    <div class="relative">
+      <input id="station-input"
+             name="station"
+             placeholder="Начните вводить станцию"
+             class="w-full border p-2 rounded-xl"
+             autocomplete="off">
+
+      <ul id="station-list"
+          class="absolute left-0 right-0 bg-white border rounded-xl mt-1 max-h-60 overflow-y-auto hidden z-10">
+        <!-- элементы вставляются скриптом -->
+      </ul>
+    </div>
+  </div>
+
+  <!-- Время получения -------------------------------------------------- -->
+  <div>
+    <label class="block font-medium">Время получения:</label>
+
+    <select name="time" id="pickup-times" class="w-full border p-2 rounded-xl">
+      {% for t in schedule.pickup %}
+        <option>{{ t }}</option>
+      {% endfor %}
+    </select>
+
+    <select name="time" id="delivery-times" class="w-full border p-2 rounded-xl hidden">
+      {% for t in schedule.delivery %}
+        <option>{{ t }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <!-- Адрес ------------------------------------------------------------ -->
+  <!-- Адрес ------------------------------------------------------------ -->
+  <div id="address-block" class="hidden">
+    <label class="block font-medium">Адрес:</label>
+    <input name="address"
+           placeholder="Адрес доставки"
+           class="w-full border p-2 rounded-xl">
+  </div>
+
+
+  <!-- Комментарий ------------------------------------------------------ -->
+  <textarea name="comment"
+            placeholder="Комментарий"
+            class="w-full border p-2 rounded-xl"></textarea>
+
+  <!-- Подтверждение ---------------------------------------------------- -->
+  <button class="checkout-btn w-full">
+    Подтвердить заказ
+  </button>
+</form>
+
+<script>
+/* ======== Данные станций ============================================== */
+const stations = [
+  "Автово", "Адмиралтейская", "Академическая", "Балтийская", "Боровая", "Броневая", "Бухарестская", "Василеостровкая", "Владимирская", "Волковская", "Выборгская", "Горьковская", "Гостиный двор", "Гражданский проспект", "Девяткино", "Достоевская", "Дунайская", "Елизаровская", "Заставкая", "Звездная", "Звенигородская", "Кировский завод", "Комендантский проспект", "Крестовкий остров", "Купчино", "Ладожская", "Ленинский проспект", "Лесная", "Лиговский проспект", "Ломоносовская", "Маяковская", "Международная", "Московская", "Московские ворота", "Нарвская", "Невский проспект", "Новочеркасская", "Обводный канал 1", "Обводный канал 2", "Обухово", "Озерки", "Парк Победы", "Парнас", "Петроградская", "Пионерская", "Площадь Александра Невского 1", "Площадь Александра Невского 2", "Площадь Восстания", "Площадь Ленина", "Площадь Мужества", "Политехническая", "Приморская", "Пролетарская", "Проспект Большевиков", "Проспект Ветеранов", "Проспект Просвещения", "Проспект Славы", "Путиловская", "Пушкинская", "Рыбацкое", "Садовая", "Сенная площадь", "Спасская", "Спортивная", "Старая деревня", "Театральная", "Технологический институт 1", "Технологический институт 2", "Удельная", "Улица Дыбенко", "Фрунзенская", "Черная речка", "Чернышевская", "Чкаловская", "Шушары", "Электросила", "Юго-Западная"
+];
+
+
+/* ======== DOM-элементы =============================================== */
+const radioPickup    = document.querySelector('input[value="pickup"]');
+const radioDelivery  = document.querySelector('input[value="delivery"]');
+const deliveryBlock  = document.getElementById('delivery-options');
+const pickupTimes    = document.getElementById('pickup-times');
+const deliveryTimes  = document.getElementById('delivery-times');
+
+const stationInput   = document.getElementById('station-input');
+const stationList    = document.getElementById('station-list');
+const stationHint    = document.getElementById('station-hint');
+
+/* ======== Переключение самовывоз / доставка ========================== */
+function toggleOptions() {
+  const isDelivery = radioDelivery.checked;
+
+  deliveryBlock.classList.toggle('hidden', !isDelivery);
+  deliveryTimes.classList.toggle('hidden', !isDelivery);
+  pickupTimes .classList.toggle('hidden',  isDelivery);
+
+  const addressBlock = document.getElementById('address-block');
+  addressBlock.classList.toggle('hidden', !isDelivery);
+
+  stationInput.required = isDelivery;
+
+  if (!isDelivery) {
+    stationHint.textContent = '';
+    closeList();
+  }
+}
+
+radioPickup .addEventListener('change', toggleOptions);
+radioDelivery.addEventListener('change', toggleOptions);
+toggleOptions();               // инициализация при загрузке
+
+/* ======== Логика поиска станции ====================================== */
+let searchBuffer = '';
+let bufferTimer;
+
+function renderList(filter = '') {
+  stationList.innerHTML = '';
+
+  const matched = filter
+    ? stations.filter(s =>
+        s.toLowerCase().startsWith(filter.toLowerCase()))
+    : stations;
+
+  if (matched.length === 0) {
+    const li = document.createElement('li');
+    li.textContent = 'Ничего не найдено';
+    li.className   = 'p-2 text-gray-500';
+    stationList.appendChild(li);
+    return;
+  }
+
+  matched.forEach(st => {
+    const li = document.createElement('li');
+    li.textContent = st;
+    li.className   = 'p-2 hover:bg-gray-100 cursor-pointer';
+    li.addEventListener('mousedown', () => { // mousedown — до blur
+      stationInput.value = st;
+      closeList();
+    });
+    stationList.appendChild(li);
+  });
+}
+
+function openList() {
+  renderList(stationInput.value);
+  stationList.classList.remove('hidden');
+}
+
+function closeList() {
+  stationList.classList.add('hidden');
+}
+
+stationInput.addEventListener('focus', openList);
+stationInput.addEventListener('input', () => {
+  searchBuffer = stationInput.value;
+  stationHint.textContent = searchBuffer;
+  renderList(searchBuffer);
+});
+
+document.addEventListener('click', (e) => {
+  if (!stationInput.parentNode.contains(e.target)) closeList();
+});
+stationInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeList();
+    return;
+  }
+});
+
+/* ======== Маска телефона (+7 999 999-99-99) =========================== */
+const phoneInput = document.querySelector('input[name="phone"]');
+phoneInput.addEventListener('input', () => {
+  let digits = phoneInput.value.replace(/\D/g, '');
+  if (digits.startsWith('7') || digits.startsWith('8')) digits = digits.slice(1);
+  digits = digits.slice(0, 10);   // максимум 10 цифр
+
+  let formatted = '+7';
+  if (digits.length > 0) formatted += ' ' + digits.slice(0, 3);
+  if (digits.length > 3) formatted += ' ' + digits.slice(3, 6);
+  if (digits.length > 6) formatted += '-' + digits.slice(6, 8);
+  if (digits.length > 8) formatted += '-' + digits.slice(8, 10);
+
+  phoneInput.value = formatted;
+});
+</script>
+
+{% endblock %}

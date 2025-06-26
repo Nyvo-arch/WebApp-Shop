@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- ───── новая шапка корзины ───── -->
+<h1 class="cart-title">КОРЗИНА</h1>
+<style>
+.cart-title{
+  font-family: Menlo, Consolas, 'Courier New', monospace;;
+  font-size:30px;          /* мобильный */
+  font-weight:700;         /* максимально жирно */
+  letter-spacing:0px;
+  text-align:center;
+  color:#000;
+  margin-bottom:1.5rem;
+}
+@media (min-width:768px){  /* на планшетах/десктопах крупнее */
+  .cart-title{font-size:60px;}
+}
+</style>
+<style>
+.checkout-black-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 17px 40px;
+  border-radius: 50px;
+  cursor: pointer;
+  border: 0;
+  background-color: white;
+  box-shadow: rgb(0 0 0 / 5%) 0 0 8px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-size: 15px;
+  transition: all 0.5s ease;
+  width: 100%;
+}
+
+.checkout-black-btn:hover {
+  letter-spacing: 3px;
+  background-color: #000;
+  color: white;
+  box-shadow: rgb(0 0 0) 0px 7px 29px 0px;
+}
+
+.checkout-black-btn:active {
+  letter-spacing: 3px;
+  background-color: #000;
+  color: white;
+  box-shadow: none;
+  transform: translateY(10px);
+  transition: 100ms;
+}
+</style>
+
+{% if items %}
+  <ul class="space-y-4">
+    {% for item in items %}
+      <li class="bg-white rounded-2xl shadow-md border border-gray-200 flex gap-4 p-4 items-center">
+        <!-- Картинка товара -->
+        <img src="{{ item.image }}" alt="{{ item.title }}" class="w-14 h-14 rounded-xl object-cover">
+
+        <div class="flex-1">
+          <div class="font-semibold text-gray-900">{{ item.title }}</div>
+          {% if item.flavor %}
+            <div class="text-xs text-gray-500 mt-1">Вкус: {{ item.flavor }}</div>
+          {% endif %}
+          <div class="mt-2 flex gap-2 items-center text-sm text-gray-600">
+            <!-- Кнопка - -->
+            <form action="/ligovckij-prospekt/cart/update" method="post">
+              <input type="hidden" name="user_id" value="{{ user_id }}">
+              <input type="hidden" name="key" value="{{ item.key }}">
+              <input type="hidden" name="qty" value="{{ item.qty - 1 }}">
+              <button class="bg-gray-100 hover:bg-gray-200 w-7 h-7 rounded-full text-lg leading-none">−</button>
+            </form>
+
+            <span class="w-6 text-center">{{ item.qty }}</span>
+
+            <!-- Кнопка + -->
+            <form action="/ligovckij-prospekt/cart/update" method="post">
+              <input type="hidden" name="user_id" value="{{ user_id }}">
+              <input type="hidden" name="key" value="{{ item.key }}">
+              <input type="hidden" name="qty" value="{{ item.qty + 1 }}">
+              <button class="bg-gray-100 hover:bg-gray-200 w-7 h-7 rounded-full text-lg leading-none">+</button>
+            </form>
+
+            <!-- Кнопка удалить -->
+            <form action="/ligovckij-prospekt/cart/update" method="post">
+              <input type="hidden" name="user_id" value="{{ user_id }}">
+              <input type="hidden" name="key" value="{{ item.key }}">
+              <input type="hidden" name="qty" value="0">
+              <button class="text-red-500 text-xl ml-2">✕</button>
+            </form>
+          </div>
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <!-- Сводка -->
+  <div class="bg-white rounded-2xl shadow-md border border-gray-200 mt-6 p-4 text-sm text-gray-700">
+    <div class="flex justify-between">
+      <span>Всего позиций:</span>
+      <span>{{ items|length }}</span>
+    </div>
+    <div class="flex justify-between mt-1">
+      <span>Сумма заказа:</span>
+      <span class="font-bold text-green-600 text-lg">{{ total }} ₽</span>
+    </div>
+  </div>
+
+  <!-- Кнопки -->
+  <div class="flex justify-center mt-4">
+    <a href="/ligovckij-prospekt/checkout?user_id={{ user_id }}" class="checkout-black-btn">
+      Оформить заказ
+    </a>
+  </div>
+
+
+  <form action="/ligovckij-prospekt/cart/clear" method="post" class="text-center mt-3">
+    <input type="hidden" name="user_id" value="{{ user_id }}">
+    <button class="text-sm text-red-500 hover:text-red-600 font-semibold transition">Очистить корзину</button>
+  </form>
+
+  <script>
+    document.querySelectorAll('form').forEach(f => {
+      f.addEventListener('submit', () => {
+        const uid = "{{ user_id }}";
+        fetch(`/ligovckij-prospekt/cart/count?user_id=${uid}`)
+          .then(r => r.json())
+          .then(d => {
+            localStorage.setItem('cartCount', d.count);
+          });
+      });
+    });
+  </script>
+
+{% else %}
+  <p class="text-center text-gray-400 mt-10">Ваша корзина пуста 😕</p>
+{% endif %}
+
+{% endblock %}

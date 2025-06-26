@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ title if title else "VAPE SHOP" }}</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Мягкий шрифт -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style> *{font-family:'Inter',sans-serif;} </style>
+</head>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const uid = "{{ user_id }}";
+    const badge = document.getElementById("cart-count");
+
+    fetch(`/ligovckij-prospekt/cart/count?user_id=${uid}`)
+      .then(r => r.json())
+      .then(d => {
+        localStorage.setItem('cartCount', d.count);
+        if (badge) badge.textContent = d.count > 0 ? d.count : '';
+      });
+  });
+</script>
+<body class="bg-[#f1f5f9] text-gray-900 pb-24">
+
+  <main class="max-w-5xl mx-auto p-4">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Нижнее меню — одно на все страницы -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg z-50">
+    <div class="flex justify-around items-center py-2">
+      <!-- Главная -->
+      <a href="/ligovckij-prospekt/?user_id={{ user_id }}"
+         class="flex flex-col items-center text-gray-700 hover:text-green-600 transition-colors">
+        <img src="/static/icons/free-icon-home-1946488.png" alt="Главная" class="w-6 h-6 mb-1">
+        <span class="text-[13px] font-semibold">Главная</span>
+      </a>
+
+      <!-- Корзина -->
+      <a href="/ligovckij-prospekt/cart?user_id={{ user_id }}"
+         class="relative flex flex-col items-center text-gray-700 hover:text-green-600 transition-colors">
+        <img src="/static/icons/free-icon-shopping-cart-1124199.png" alt="Корзина" class="w-6 h-6 mb-1">
+        <span class="text-[13px] font-semibold">Корзина</span>
+        <span id="cart-count"
+              class="absolute top-0 right-3 inline-flex items-center justify-center h-4 min-w-[18px] px-1 text-[10px] font-medium text-white bg-black rounded-full">
+          0
+        </span>
+      </a>
+
+      <!-- Профиль -->
+      <a href="/ligovckij-prospekt/account?user_id={{ user_id }}"
+         class="flex flex-col items-center text-gray-700 hover:text-green-600 transition-colors">
+        <img src="/static/icons/free-icon-user-account-9143968.png" alt="Профиль" class="w-6 h-6 mb-1">
+        <span class="text-[13px] font-semibold">Профиль</span>
+      </a>
+    </div>
+  </nav>
+
+
+
+</body>
+</html>

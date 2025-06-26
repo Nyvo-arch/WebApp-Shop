@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% set total_sum = orders | sum(attribute='total') %}
+
+{# ───── Звёзды и статус ───── #}
+{% if total_sum < 2000 %}
+  {% set stars = 1 %}
+  {% set label = 'Новичок' %}
+  {% set next_level = 2000 %}
+{% elif total_sum < 5000 %}
+  {% set stars = 2 %}
+  {% set label = 'Первый шаг' %}
+  {% set next_level = 5000 %}
+{% elif total_sum < 10000 %}
+  {% set stars = 3 %}
+  {% set label = 'Постоянный клиент' %}
+  {% set next_level = 10000 %}
+{% elif total_sum < 20000 %}
+  {% set stars = 4 %}
+  {% set label = 'Продвинутый' %}
+  {% set next_level = 20000 %}
+{% else %}
+  {% set stars = 5 %}
+  {% set label = '💎 VIP клиент' %}
+  {% set next_level = None %}
+{% endif %}
+
+<!-- Карточка пользователя -->
+<div class="bg-white rounded-2xl shadow-md border border-gray-200 p-5 mb-6">
+  <div class="flex items-center gap-4">
+    <img src="{{ user.avatar or '/static/default_avatar.jpg' }}" alt="avatar" class="w-14 h-14 rounded-full shadow-inner object-cover">
+    <div class="flex-1">
+      <div class="text-lg font-semibold text-gray-800">
+        {% if user.full_name %}
+          {{ user.full_name }}
+        {% elif user.username %}
+          @{{ user.username }}
+        {% else %}
+          Пользователь
+        {% endif %}
+      </div>
+      <div class="text-sm text-gray-500 mb-1">Сумма заказов: {{ total_sum }} ₽</div>
+      <div class="flex items-center gap-1 mb-1">
+        {% for i in range(1, 6) %}
+          {% if i <= stars %}
+            <span class="text-yellow-400 text-xl">★</span>
+          {% else %}
+            <span class="text-gray-300 text-xl">☆</span>
+          {% endif %}
+        {% endfor %}
+        <span class="text-sm text-gray-600 ml-2">{{ label }}</span>
+      </div>
+
+      {% if next_level %}
+        {% set progress = ((total_sum / next_level) * 100) | round(0, 'floor') %}
+        <div class="w-full h-2.5 bg-gray-200 rounded-full overflow-hidden">
+          <div class="h-full bg-green-500" style="width: {{ progress }}%"></div>
+        </div>
+        <div class="text-xs text-gray-400 mt-1">
+          До следующего уровня осталось {{ next_level - total_sum }} ₽
+        </div>
+      {% else %}
+        <div class="text-xs text-green-600 mt-1 font-semibold">Максимальный уровень достигнут!</div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- Заголовок -->
+<h2 class="text-3xl font-bold text-gray-800 mb-4 text-center"
+    style="font-family: Menlo, Consolas, 'Courier New', monospace;">
+    История заказов
+</h2>
+
+{% if orders %}
+  <div class="space-y-6">
+    {% for o in orders | sort(attribute='id', reverse=true) %}
+      <div class="bg-white rounded-2xl shadow border p-4">
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-gray-400 text-sm">#{{ o.id }}</span>
+          <span class="text-green-600 font-bold text-lg">{{ o.total }} ₽</span>
+        </div>
+        <div class="space-y-1 mb-2">
+          {% for it in o["items"] %}
+            <div class="text-sm text-gray-800">
+              {{ it.title }}
+              {% if it.flavor %}
+                <div class="text-xs text-gray-500 ml-2">вкус: {{ it.flavor }}</div>
+              {% endif %}
+              <div class="text-sm text-gray-500">×{{ it.qty }}</div>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="text-xs text-gray-500 mt-2">
+          📍 {{ o.address }}<br>📞 {{ o.phone }}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="text-center text-gray-400 mt-10">У вас пока нет заказов 😕</p>
+{% endif %}
+
+{% endblock %}
